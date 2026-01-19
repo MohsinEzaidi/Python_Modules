@@ -9,7 +9,7 @@ class Plant:
 
 class Flower(Plant):
     def __init__(self, name, color):
-        super().__init__(name)
+        Plant.__init__(self, name)
         self.__color = color
     def get_color(self):
         return self.__color
@@ -19,3 +19,4 @@ class Flower(Plant):
 p = Plant('5izo')
 f = Flower('chabba warda', '7amra ya 5oya 7amra')
 print(p._Plant__name)
+
