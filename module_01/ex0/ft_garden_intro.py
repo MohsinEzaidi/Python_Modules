@@ -1,4 +1,4 @@
-def ft_garden_intro():
+def ft_garden_intro() -> None:
     """Displays information about a plant in the garden."""
     name = "Rose"
     height = 25

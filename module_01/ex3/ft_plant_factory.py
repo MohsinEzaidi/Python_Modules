@@ -1,14 +1,14 @@
 class Plant:
-    """A class representing a plant in the garden."""
-    """Initialize the plants counter."""
+    """A class representing a plant in the garden.
+    Initialize the plants counter."""
     counter = 0
 
     def __init__(self, name: str, height: int, age: int) -> None:
-        """Initializes the plant attributes."""
+        """Initializes the plant attributes.\n
+        Increases the counter by 1 each time we create a new object."""
         self.name = name
         self.height = height
         self.age = age
-        """Increases the counter by 1 each time we create a new object."""
         Plant.counter += 1
 
     def created_msg(self) -> None:
@@ -17,6 +17,7 @@ class Plant:
 
 
 def main() -> None:
+    """A main function to test the program"""
     print('=== Plant Factory Output ===')
     plant1 = Plant('Rose', 25, 30)
     plant2 = Plant('Oak', 200, 365)

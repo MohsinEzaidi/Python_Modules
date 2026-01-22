@@ -4,16 +4,16 @@ class GardenManager:
     and show information about plants in that garden.
     """
     total_managers = 0
-    managers = []
+    managers: list[str] = []
 
     def __init__(self, name: str) -> None:
         """
         Make a new Garden Manager and create an empty garden for them.
         """
         self.name = name
-        self.garden = []
+        self.garden: list[Plant] = []
         self.managers.append(self.name)
-        self.initial_heights = []
+        self.initial_heights: list[int] = []
         self.plant_added = 0
         GardenManager.total_managers += 1
 
@@ -23,7 +23,8 @@ class GardenManager:
         """
         total = 0
 
-        def calculate_total_growth(initial_heights: list, garden: list) -> int:
+        def calculate_total_growth(
+              initial_heights: list[int], garden: list) -> int:
             """
             Find out how much all plants grew in total.
             """
@@ -35,12 +36,11 @@ class GardenManager:
             return total
         calculate_total_growth = staticmethod(calculate_total_growth)
 
-    def create_garden_network(cls, names_list: list):
+    def create_garden_network(cls, names_list: list[str]) -> list:
         """
         Create a list of new garden managers at once.
         """
         return [cls(name) for name in names_list]
-
     create_garden_network = classmethod(create_garden_network)
 
     def help_all_plants(self, cm: int):
@@ -107,7 +107,7 @@ class GardenManager:
                 return print('Height validation test: False')
         return print('Height validation test: True')
 
-    def get_score(managers):
+    def get_score(managers: list) -> None:
         """
         Show the points of all garden managers.
         """
@@ -191,9 +191,7 @@ class PrizeFlower(FloweringPlant):
 
 
 def main() -> None:
-    """
-    The main part of the program to run the demo.
-    """
+    """a main function to test the program"""
     oak = Plant('Oak tree', 100)
     rose = FloweringPlant('Rose', 25, 'red')
     sunflower = PrizeFlower('Sunflower', 50, 'yellow', 10)

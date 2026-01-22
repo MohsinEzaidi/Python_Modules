@@ -4,16 +4,16 @@ class SecurePlant:
         """Initializes the plant attributes."""
         self.name = name
         """These attribute considered a private attributes."""
-        self._height = height
-        self._age = age
+        self._height = height if height > 0 else 0
+        self._age = age if age > 0 else 0
 
     def get_height(self) -> int:
         """Access the private attribute _height and return its value."""
         return self._height
 
     def set_height(self, new_height: int) -> None:
-        """Prints an error msg if height given is negative."""
-        """Change the value of the height if the new_height is positive."""
+        """Prints an error msg if height given is negative.\n
+        Change the value of the height if the new_height is positive."""
         if new_height < 0:
             print('Invalid operation attempted: ', end='')
             print(f'height {new_height}cm [REJECTED]')
@@ -22,7 +22,7 @@ class SecurePlant:
             self._height = new_height
             print(f'Height updated: {new_height}cm [OK]')
 
-    def get_age(self) -> None:
+    def get_age(self) -> int:
         """Access the private attribute _age and return its value."""
         return self._age
 
@@ -39,7 +39,8 @@ class SecurePlant:
 
 
 def main() -> None:
-    plant1 = SecurePlant('Rose', 23, 50)
+    """a main function to test the program"""
+    plant1 = SecurePlant('Rose', -23, -50)
     print('=== Garden Security System ===')
     print(f'Plant created: {plant1.name}')
     plant1.set_height(25)

@@ -19,7 +19,8 @@ class Plant:
         print(f'{self.name.capitalize()}: {self.height}cm, {self.age} day old')
 
 
-def main():
+def main() -> None:
+    """a main function to test the program"""
     plant = Plant('rose', 25, 30)
     old_height = plant.height
     print('=== Day 1 ===')

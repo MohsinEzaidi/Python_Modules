@@ -1,43 +1,54 @@
 def test_error_types() -> None:
     try:
-        int('kg')
+        print('\nTesting ValueError...')
+        int('8')
     except ValueError:
-        print('Testing ValueError...')
-        print('Caught ValueError: invalid literal for int()\n')
+        print('Caught ValueError: invalid literal for int()')
+    else:
+        print('No ValueError caught :)')
 
     try:
+        print('\nTesting ZeroDivisionError...')
         3/0
     except ZeroDivisionError:
-        print('Testing ZeroDivisionError...')
-        print('Caught ZeroDivisionError: division by zero\n')
+        print('Caught ZeroDivisionError: division by zero')
+    else:
+        print('No ZeroDivisionError caught :)')
 
     try:
-        x = 'missing.txt'
+        print('\nTesting FileNotFoundError...')
+        x = 'tests.py'
         open(x)
+        print('\nTesting FileNotFoundError...')
     except FileNotFoundError:
-        print('Testing FileNotFoundError...')
-        print(f'Caught FileNotFoundError: No such file \'{x}\'\n')
+        print(f'Caught FileNotFoundError: No such file \'{x}\'')
+    else:
+        print('No FileNotFoundError caught :)')
 
     try:
+        print('\nTesting KeyError...')
+        garden_data = {'rose': 10, 'carrot': 30}
         missing_plant = 'missing_plant'
-        garden_data = {'rose': 10}
-        garden_data['missing_plant']
+        garden_data[missing_plant]
     except KeyError as e:
-        print('Testing KeyError...')
-        print(f'Caught KeyError: {e}\n')
+        print(f'Caught KeyError: {e}')
+    else:
+        print('No KeyError caught :)')
 
     try:
-        int('jd')
-
+        print("\nTesting multiple errors together...")
+        int('8')
     except (ZeroDivisionError, KeyError, ValueError, FileNotFoundError):
-        print("Testing multiple errors together...")
-        print('Caught an error, but program continues!\n')
+        print('Caught an error, but program continues!')
+    else:
+        print('No ValueError caught :)')
 
 
 def main() -> None:
-    print("=== Garden Error Types Demo ===\n")
+    print("=== Garden Error Types Demo ===")
     test_error_types()
-    print('All error types tested successfully!')
+    print()
+    print('\nAll error types tested successfully!')
 
 
 if __name__ == '__main__':
