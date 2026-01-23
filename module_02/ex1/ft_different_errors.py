@@ -37,17 +37,17 @@ def test_error_types() -> None:
 
     try:
         print("\nTesting multiple errors together...")
-        int('8')
-    except (ZeroDivisionError, KeyError, ValueError, FileNotFoundError):
+        int('abs')
+        7/0
+    except (Exception):
         print('Caught an error, but program continues!')
     else:
-        print('No ValueError caught :)')
+        print('No Error caught :)')
 
 
 def main() -> None:
     print("=== Garden Error Types Demo ===")
     test_error_types()
-    print()
     print('\nAll error types tested successfully!')
 
 

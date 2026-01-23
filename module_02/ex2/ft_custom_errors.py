@@ -6,7 +6,7 @@ class PlantError(GardenError):
     counter = 1
     pass
 
-class WaterError(PlantError):
+class WaterError(GardenError):
     counter = 1
     pass
 
@@ -52,22 +52,25 @@ def main() -> None:
     tomato = Garden.Plant('tomato', True)
     water_tank = Garden.WaterTank(-10)
     try:
-        print('\nTesting PlantError...')
-        tomato.test_plant()
-    except GardenError as e:
-        print(e)
+        try:
+            print('\nTesting PlantError...')
+            tomato.test_plant()
+        except GardenError as e:
+            print(e)
 
-    try:
-        print('\nTesting WaterError...')
-        water_tank.test_water_tank()
-    except GardenError as e:
-        print(e)
+        try:
+            print('\nTesting WaterError...')
+            water_tank.test_water_tank()
+        except GardenError as e:
+            print(e)
 
-    try:
-        print('\nTesting catching all garden errors...')
-        Garden.water_plant(tomato, water_tank)
-    except GardenError as e:
-        print(e)
+        try:
+            print('\nTesting catching all garden errors...')
+            Garden.water_plant(tomato, water_tank)
+        except GardenError as e:
+            print(e)
+    except Exception as e:
+        print(f'Caught an error "{e.__class__.__name__}"!!')
     print('\nAll custom error types work correctly!')
 
 
