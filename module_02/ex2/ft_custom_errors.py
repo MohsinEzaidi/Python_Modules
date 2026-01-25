@@ -1,16 +1,22 @@
 class GardenError(Exception):
-    """Base exception for all garden-related errors."""
-    pass
+    """Base exception for all garden related errors."""
+    def __init__(self, msg: str = 'Caught GardenError') -> None:
+        """Create a GardenError message"""
+        super().__init__(msg)
 
 
 class PlantError(GardenError):
-    """Raised when a plant-related problem occurs."""
-    pass
+    """Raised when a plant related problem occurs."""
+    def __init__(self, msg: str = 'Caught PlantError') -> None:
+        """Create a PlantError message"""
+        super().__init__(msg)
 
 
 class WaterError(GardenError):
-    """Raised when a water-related problem occurs."""
-    pass
+    """Raised when a water related problem occurs."""
+    def __init__(self, msg: str = 'Caught WaterError') -> None:
+        """Create a WaterError message"""
+        super().__init__(msg)
 
 
 class Garden:
@@ -67,13 +73,13 @@ if __name__ == '__main__':
         try:
             print('\nTesting PlantError...')
             tomato.test_plant()
-        except GardenError as e:
+        except PlantError as e:
             print(e)
 
         try:
             print('\nTesting WaterError...')
             water_tank.test_water_tank()
-        except GardenError as e:
+        except WaterError as e:
             print(e)
 
         try:

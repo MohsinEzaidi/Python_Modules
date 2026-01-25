@@ -1,11 +1,15 @@
 class GardenError(Exception):
-    """Base exception for all garden-related errors."""
-    pass
+    """Base exception for all garden related errors."""
+    def __init__(self, msg: str = 'Caught GardenError') -> None:
+        """Create a GardenError message"""
+        super().__init__(msg)
 
 
 class PlantError(GardenError):
     """Raised when a plant-related operation fails."""
-    pass
+    def __init__(self, msg: str = 'Caught PlantError') -> None:
+        """Create a PlantError message"""
+        super().__init__(msg)
 
 
 class Plant:

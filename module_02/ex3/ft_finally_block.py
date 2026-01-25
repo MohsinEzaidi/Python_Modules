@@ -14,14 +14,14 @@ def test_watering_system() -> None:
     """Test the watering system with valid and invalid data."""
     try:
         print('\nTesting normal watering...')
-        water_plants(['warda', 'tefa7a', 'banana'])
+        water_plants(['rose', 'apple', 'banana'])
     except Exception as e:
         print(e)
     finally:
         print('Closing watering system (cleanup)')
     try:
         print('\nTesting with error...')
-        water_plants(['warda', 'tefa7a', 'banana', 635])
+        water_plants(['rose', 'apple', 'banana', 635])
     except Exception as e:
         print(e)
     finally:
