@@ -1,1 +1,1 @@
-print(type(''))
+print(int('33'))

@@ -1,4 +1,7 @@
 def test_error_types() -> None:
+    """
+    Demonstrate how different Python exception types are raised and caught.
+    """
     try:
         print('\nTesting ValueError...')
         int('8')
@@ -39,17 +42,24 @@ def test_error_types() -> None:
         print("\nTesting multiple errors together...")
         int('abs')
         7/0
-    except (Exception):
+    except (ValueError, ZeroDivisionError,
+            FileNotFoundError, KeyError):
         print('Caught an error, but program continues!')
     else:
         print('No Error caught :)')
 
 
 def main() -> None:
+    """Run all exception handling tests."""
     print("=== Garden Error Types Demo ===")
     test_error_types()
     print('\nAll error types tested successfully!')
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(
+            f'Caught {e.__class__.__name__}, PLEASE stick to the normal'
+            ' tests INSIDE try blocks')

@@ -1,4 +1,5 @@
 def check_temperature(temp_str: str) -> int | None:
+    """Validate a temperature string and return it if safe for plants."""
     try:
         print(f'Testing temperature: {temp_str}')
         temp = int(temp_str)
@@ -17,6 +18,7 @@ def check_temperature(temp_str: str) -> int | None:
 
 
 def main() -> None:
+    """Run sample tests for the garden temperature checker."""
     print('=== Garden Temperature Checker ===\n')
     check_temperature('25')
     check_temperature('abc')
@@ -26,4 +28,7 @@ def main() -> None:
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(f'Caught {e.__class__.__name__}')
