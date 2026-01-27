@@ -4,7 +4,7 @@ from sys import argv as av
 def command_quest() -> None:
     try:
         ac = av.__len__()
-        if ac == 1:
+        if ac < 2:
             print('No arguments provided!')
         print(f'Program name: {av[0]}')
         if ac > 1:
