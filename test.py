@@ -1,1 +1,3 @@
-from sys import argv as av
+# letters_set = {'t', 'Y', 'l', 'B', 'v', 'm', 'a', 'w', 'P', 'X', 'k', 'H', 'e', 'O', 'u', 'i', 'F', 'j', 'b', 'z', 'x', 'S', 'g', 'G', 'd', 'h', 'U', 'W', 'C', 's', 'c', 'N', 'f', 'M', 'Z', 'R', 'I', 'A', 'K', 'y', 'Q', 'q', 'V', 'D', 'E', 'n', 'T', 'p', 'r', 'J', 'o', 'L'}
+letters_set = {88,2,1,1,99999999,2,8,99,7,6,8765,5,3,-9,2}
+print(letters_set)
