@@ -3,6 +3,7 @@ def create_player_achievement(name: str, achievements: list) -> set:
     print(f'Player {name} achievements: {achievements_set}')
     return achievements_set
 
+
 def all_unique_achievements(players: list[set]) -> set:
     return set().union(*players)
 
@@ -12,19 +13,15 @@ def all_common_achievements(players: list[set]) -> set:
 
 
 def all_rare_achievements(players: list[set]) -> set:
-    rare_achievements = players[0].difference(*players[1:])
-    unique_achievements = all_unique_achievements()
-    
-    print("\n------------------------------------------------")
-    print((players[1].difference(players[2])))
-    print("------------------------------------------------\n")
-    counter = 0
-    for player in players:
-        for achievement in rare_achievements:
-            if achievement in player:
-                counter += 1
-    print(f'Rare achievements ({players.__len__() - counter} player): {rare_achievements}\n')
+    unique_achievements = all_unique_achievements(players)
+    rare_achievements = set()
+    players_len = players.__len__()
+    for i in range(players_len):
+        for j in range(i + 1, players_len):
+            rare_achievements = rare_achievements.union(players[i].intersection(players[j]))
+    rare_achievements = unique_achievements.difference(rare_achievements)
     return rare_achievements
+
 
 def main() -> None:
     print('=== Achievement Tracker System ===\n')
@@ -32,17 +29,21 @@ def main() -> None:
     bob = create_player_achievement('bob', ['first_kill', 'level_10', 'boss_slayer', 'collector'])
     charlie = create_player_achievement('charlie', ['level_10', 'treasure_hunter', 'boss_slayer', 'speed_demon', 'perfectionist'])
     players = [alice, bob, charlie]
-    # print('\n=== Achievement Analytics ===')
-    # unique_achievements = all_unique_achievements(players)
-    # print(f'All unique achievements: {unique_achievements}\n'
-    #       f'Total unique achievements: {unique_achievements.__len__()}\n')
-    # common_achievements = all_common_achievements(players)
-    # print(f'Common to all players: {common_achievements}')
-    all_rare_achievements(players)
-    # print(f'Alice vs Bob common: {all_common_achievements([alice, bob])}')
-    # print(f'Alice unique: {all_unique_achievements([alice, bob, charlie])}')
-    # print(f'Bob unique: {all_unique_achievements([bob, alice, charlie])}')
+    print('\n=== Achievement Analytics ===')
+    unique_achievements = all_unique_achievements(players)
+    print(f'All unique achievements: {unique_achievements}\n'
+          f'Total unique achievements: {unique_achievements.__len__()}\n')
+    common_achievements = all_common_achievements(players)
+    print(f'Common to all players: {common_achievements}')
+    rare_achievements = all_rare_achievements(players)
+    print(f'Rare achievements (1 player): {rare_achievements}\n')
+    print(f'Alice vs Bob common: {all_common_achievements([alice, bob])}')
+    print(f'Alice unique: {alice.difference(bob)}')
+    print(f'Bob unique: {bob.difference(alice)}')
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(e)
