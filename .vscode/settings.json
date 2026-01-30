@@ -1,4 +1,16 @@
 {
     "python-envs.defaultEnvManager": "ms-python.python:system",
-    "python-envs.pythonProjects": []
+    "python-envs.pythonProjects": [],
+    "editor.tokenColorCustomizations":
+    {
+    "textMateRules": [
+        {
+        "scope": "string.quoted.docstring.multi.python",
+        "settings": {
+            "foreground": "#686889"
+        }
+        }
+    ]
+    // lllll
+    }
 }
