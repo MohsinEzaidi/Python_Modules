@@ -1,18 +1,22 @@
 from sys import argv as av
 
+
 def ft_score_analytics() -> None:
+    """
+    Analyze scores from command-line arguments
+    and display sum, max and min of the scores.
+    """
     ac = len(av)
     if ac < 2:
-        print('No scores provided. Usage: python3 ft_score_analytics.py <score1> <score2> ...')
+        print('No scores provided. Usage: python3 '
+              'ft_score_analytics.py <score1> <score2> ...')
     else:
-        scores: list[int] = []
+        scores = []
         for i in range(1, ac):
-            try:
-                score = int(av[i])
-                scores.append(score)
-            except ValueError as e:
-                print(e)
-                scores = []
+            score = int(av[i])
+            if score < 0:
+                raise Exception('Error: Negative values are not allowed')
+            scores.append(score)
         num_players = ac - 1
         total = sum(scores)
         min_score = min(scores)

@@ -1,17 +1,23 @@
 def game_stream(events_num: int):
+    """
+    Generate a stream of game events for players.
+    """
     players = ['alice', 'bob', 'charlie', 'david']
     actions = ['killed monster', 'found treasure', 'leveled up']
     for i in range(1, events_num + 1):
         event = {
-            'id' : i,
-            'player' : players[i % 4],
-            'action' : actions[i % 3],
-            'level' : (i % 15) + 1
+            'id': i,
+            'player': players[i % 4],
+            'action': actions[i % 3],
+            'level': (i % 15) + 1
         }
         yield event
 
 
 def fibonacci_sequence(num: int):
+    """
+    Generate the first `num` Fibonacci numbers.
+    """
     a = 0
     b = 1
     for _ in range(num):
@@ -22,6 +28,9 @@ def fibonacci_sequence(num: int):
 
 
 def prime_numbers(num: int):
+    """
+    Generate the first `num` prime numbers.
+    """
     counter = 0
     n = 2
     while counter < num:
@@ -37,6 +46,9 @@ def prime_numbers(num: int):
 
 
 def main() -> None:
+    """
+    Process game events stream and demonstrate Fibonacci and prime generators.
+    """
     events_num = 1000
     events = game_stream(events_num)
     found_treasure_counter = 0
@@ -47,7 +59,8 @@ def main() -> None:
     print(f'\nProcessing {events_num} game events...\n')
     for _ in range(events_num):
         event = next(events)
-        print(f"Event {event['id']}: Player {event['player']} (level {event['level']}) {event['action']}")
+        print(f'Event {event['id']}: Player {event['player']} '
+              f'(level {event['level']}) {event['action']}')
         if event['action'] == 'found treasure':
             found_treasure_counter += 1
         if event['action'] == 'leveled up':

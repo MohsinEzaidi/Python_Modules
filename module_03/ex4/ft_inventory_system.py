@@ -1,32 +1,5 @@
-# $> python3 ft_inventory_system.py sword:1 potion:5 shield:2 armor:3 helmet:1
-# === Inventory System Analysis ===
-# Total items in inventory: 12
-# Unique item types: 5
-
-# === Current Inventory ===
-# potion: 5 units (41.7%)
-# armor: 3 units (25.0%)
-# shield: 2 units (16.7%)
-# sword: 1 unit (8.3%)
-# helmet: 1 unit (8.3%)
-
-# === Inventory Statistics ===
-# Most abundant: potion (5 units)
-# Least abundant: sword (1 unit)
-
-# === Item Categories ===
-# Moderate: {'potion': 5}
-# Scarce: {'sword': 1, 'shield': 2, 'armor': 3, 'helmet': 1}
-
-# === Management Suggestions ===
-# Restock needed: ['sword', 'helmet']
-
-# === Dictionary Properties Demo ===
-# Dictionary keys: ['sword', 'potion', 'shield', 'armor', 'helmet']
-# Dictionary values: [1, 5, 2, 3, 1]
-# Sample lookup - 'sword' in inventory: True
-
 from sys import argv as av
+
 
 def parsing_dictionary() -> dict:
     ac = len(av)
@@ -36,9 +9,11 @@ def parsing_dictionary() -> dict:
     for a in av[1:]:
         enventory_item = a.split(':')
         if len(enventory_item) != 2:
-            raise Exception(f'Parsing Error: Invalid argument your argument should look like this "key:value"')
+            raise Exception('Parsing Error: Invalid argument your '
+                            'argument should look like this "key:value"')
         if int(enventory_item[1]) < 0:
-            raise Exception('Parsing Error: quantity cannot be a negative value')
+            raise Exception(
+                'Parsing Error: quantity cannot be a negative value')
         if enventory_item[0].strip() == '':
             raise Exception('Parsing Error: key name cannot me empty string')
         enventory[enventory_item[0]] = int(enventory_item[1])
@@ -112,7 +87,8 @@ def main() -> None:
 
     print('\n=== Current Inventory ===')
     for item, quantity in enventory.items():
-        print(f'{item}: {quantity} units ({calculate_percentage(enventory, item):.1f}%)')
+        print(f'{item}: {quantity} units '
+              f'({calculate_percentage(enventory, item):.1f}%)')
 
     print('\n=== Inventory Statistics ===')
     most_abundant = most_abundant_item(enventory)
@@ -122,7 +98,7 @@ def main() -> None:
     print(f'Most abundant: {most_key} ({most_value} units)')
     print(f'Least abundant: {least_key} ({least_value} units)')
 
-    print(f'\n=== Item Categories ===')
+    print('\n=== Item Categories ===')
     categories = get_item_categories(enventory)
     for item, value in categories.items():
         print(f'{item}: {value}')
@@ -133,7 +109,6 @@ def main() -> None:
 
     print('\n=== Dictionary Properties Demo ===')
     properties_demo('sword', enventory)
-
 
 
 if __name__ == '__main__':
