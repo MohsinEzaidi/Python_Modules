@@ -12,6 +12,7 @@ def ft_vault_security(file1: str = 'classified_data.txt',
 
         with open(file1, 'r') as f1, open(file2, 'r') as f2:
             print('Vault connection established with failsafe protocols')
+
             print('\nSECURE EXTRACTION:')
             print(f1.read())
 
@@ -20,6 +21,7 @@ def ft_vault_security(file1: str = 'classified_data.txt',
 
         print('Vault automatically sealed upon completion\n')
         print('All vault operations completed with maximum security.')
+
     except FileNotFoundError as e:
         print(f'ERROR: The file {e.filename} '
               'does not exist in this diractory')

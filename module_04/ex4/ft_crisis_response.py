@@ -16,6 +16,9 @@ def ft_crisis_response(file_name: str) -> None:
         print('RESPONSE: Archive not found in storage matrix')
         print('STATUS: Crisis handled, system stable\n')
 
+    except Exception:
+        print('An Error happened but the programe continues')
+
 
 if __name__ == '__main__':
     try:

@@ -10,10 +10,10 @@ def ft_stream_management() -> None:
     report = input('Input Stream active. Enter status report: ')
 
     print('\n[STANDARD] Archive status from '
-          f'{archivist_id}: {report}', file=sys.stdout)
+          f'{archivist_id}: {report}')
     print('[ALERT] System diagnostic: Communication '
           'channels verified', file=sys.stderr)
-    print('[STANDARD] Data transmission complete\n', file=sys.stdout)
+    print('[STANDARD] Data transmission complete\n')
 
     print('Three-channel communication test successful.')
 
@@ -24,9 +24,10 @@ if __name__ == '__main__':
         ft_stream_management()
     except EOFError:
         print('\nEOFError: please enter the inputs correctly,'
-              ' don\'t click (control + D)')
+              ' don\'t click (control + D)', file=sys.stderr)
     except KeyboardInterrupt:
-        print('\nKeyboardInterrupt: please enter the inputs correctly,'
-              ' don\'t click (control + C) before the end of the program')
+        print('\nKeyboardInterrupt: please enter the inputs '
+              'correctly, don\'t click (control + C) before '
+              'the end of the program', file=sys.stderr)
     except Exception as e:
-        print(f'ERROR: {e}')
+        print(f'ERROR: {e}', file=sys.stderr)
