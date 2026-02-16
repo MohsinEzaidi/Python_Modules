@@ -1,5 +1,14 @@
-try:
-	i = 10.0**100000
-	print(i)
-except OverflowError:
-	print('Error: Value too large. Please keep it reasonable')
+from abc import ABC, abstractmethod
+class A(ABC):
+	@abstractmethod
+	def hello():
+		print('Hello')
+
+class B(A):
+	def hello():
+		print('Hello b')
+	pass
+
+a=A()
+b = B()
+print(b)

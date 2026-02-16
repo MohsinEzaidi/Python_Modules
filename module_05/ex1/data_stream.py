@@ -4,17 +4,18 @@ from typing import Any, List, Optional, Union, Dict
 
 class DataStream(ABC):
 
-    def __init__(self, stream_id: Optional[str], stream_type: Optional[str]) -> None:
+    def __init__(self, stream_id: Optional[str],
+                 stream_type: Optional[str]) -> None:
         self._stream_id = stream_id
         self._stream_type = stream_type
         self.processed_data = 0
 
     def get_stream_id(self) -> Optional[str]:
         return self._stream_id
-    
+
     def set_stream_id(self, new_stream_id: Optional[str]) -> None:
         self._stream_id = new_stream_id
-    
+
     def get_stream_type(self) -> Optional[str]:
         return self._stream_type
 
@@ -25,20 +26,21 @@ class DataStream(ABC):
     def process_batch(self, data_batch: List[Any]) -> str:
         pass
 
-    def filter_data(self, data_batch: List[Any], criteria: Optional[str] = None) -> List[Any]:
-        if criteria == None:
-            return []
-
+    def filter_data(self, data_batch: List[Any],
+                    criteria: Optional[str] = None) -> List[Any]:
+        self.processed_data += 1
         if isinstance(self, SensorStream):
             filtered_data = []
             for item in data_batch:
                 split_item = item.split(':')
                 if len(split_item) != 2:
-                    raise Exception('Error: data should be in this form \'key:value\'')
+                    raise Exception(
+                        'Error: data should be in this form \'key:value\'')
                 try:
                     value = float(split_item[1])
                 except (ValueError, TypeError):
-                    raise Exception('Error: data values should be of type int or float')
+                    raise Exception(
+                        'Error: data values should be of type int or float')
                 except OverflowError:
                     print('Error: Value too large. Please keep it reasonable')
                 if split_item[0] != criteria:
@@ -51,7 +53,8 @@ class DataStream(ABC):
             for item in data_batch:
                 split_item = item.split(':')
                 if len(split_item) != 2:
-                    raise Exception('Error: data should be in this form \'key:value\'')
+                    raise Exception(
+                        'Error: data should be in this form \'key:value\'')
                 try:
                     if split_item[0] == 'buy':
                         filtered_data[1] += int(split_item[1])
@@ -65,10 +68,12 @@ class DataStream(ABC):
             return [event for event in data_batch if event == criteria]
 
         else:
-            raise Exception('Error: type of the stream should be one of these [SensorStream, TransactionStream, EventStream]')
+            raise Exception(
+                'Error: type of the stream should be one of these '
+                '[SensorStream, TransactionStream, EventStream]')
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
-        return{
+        return {
             'id': self.get_stream_id(),
             'type': self.get_stream_type()
         }
@@ -76,10 +81,8 @@ class DataStream(ABC):
 
 class SensorStream(DataStream):
 
-    sensor_counter = 0
-    def __init__(self, stream_id: Optional[str]):
+    def __init__(self, stream_id: Optional[str]) -> None:
         super().__init__(stream_id, 'Environmental Data')
-        SensorStream.sensor_counter += 1
 
     def process_batch(self, data_batch: List[Any]) -> str:
         self.processed_data += len(data_batch)
@@ -88,10 +91,8 @@ class SensorStream(DataStream):
 
 class TransactionStream(DataStream):
 
-    transaction_counter = 0
-    def __init__(self, stream_id: Optional[str]):
+    def __init__(self, stream_id: Optional[str]) -> None:
         super().__init__(stream_id, 'Financial Data')
-        TransactionStream.transaction_counter += 1
 
     def process_batch(self, data_batch: List[Any]) -> str:
         return f'Processing transaction batch: {data_batch}'
@@ -99,17 +100,45 @@ class TransactionStream(DataStream):
 
 class EventStream(DataStream):
 
-    event_counter = 0
-    def __init__(self, stream_id: Optional[str]):
+    def __init__(self, stream_id: Optional[str]) -> None:
         super().__init__(stream_id, 'System Events')
-        EventStream.event_counter += 1
 
     def process_batch(self, data_batch: List[Any]) -> str:
         return f'Processing event batch: {data_batch}'
 
 
 class StreamProcessor:
-    pass
+    def process_all_streams(self, streams: List[DataStream],
+                            data_batches: List[List[Any]]) -> List[int]:
+        results = [0, 0, 0]
+        for stream, data in zip(streams, data_batches):
+            if isinstance(stream, SensorStream):
+                try:
+                    stream.filter_data(data)
+                    print(f'- Sensor data: {len(data)} readings processed')
+                except Exception as e:
+                    results[0] += 1
+                    print('-', e)
+            elif isinstance(stream, TransactionStream):
+                try:
+                    stream.filter_data(data)
+                    print('- Transaction data: '
+                          f'{len(data)} operations processed')
+                except Exception as e:
+                    results[1] += 1
+                    print('-', e)
+            elif isinstance(stream, EventStream):
+                try:
+                    stream.filter_data(data)
+                    print(f'- Event data: {len(data)} events processed')
+                except Exception as e:
+                    results[2] += 1
+                    print('-', e)
+            else:
+                raise Exception(
+                    'Error: All streams should be one of these '
+                    '[SensorStream, TransactionStream, EventStream]')
+        return results
 
 
 def main() -> None:
@@ -124,7 +153,9 @@ def main() -> None:
         print(f"Stream ID: {stats['id']}, Type: {stats['type']}")
         print(sensor.process_batch(data))
         filtered_data = sensor.filter_data(data, criteria)
-        print(f"Sensor analysis: {len(data)} readings processed, avg {criteria}: {sum(filtered_data)/len(filtered_data)}{'°C' if criteria == 'temp' else ''}")
+        print(f"Sensor analysis: {len(data)} readings processed, avg"
+              f" {criteria}: {sum(filtered_data) / len(filtered_data)}"
+              f"{'°C' if criteria == 'temp' else ''}")
     except Exception as e:
         print(e)
 
@@ -138,7 +169,8 @@ def main() -> None:
         print(f"Stream ID: {stats['id']}, Type: {stats['type']}")
         print(transaction.process_batch(data))
         units = filtered_data[1] - filtered_data[0]
-        print(f'Transaction analysis: {len(data)} operations, {criteria}: {"+" + str(units) if units > 0 else str(units)} units')
+        print(f'Transaction analysis: {len(data)} operations, {criteria}: '
+              f'{"+" + str(units) if units > 0 else str(units)} units')
     except Exception as e:
         print(e)
 
@@ -150,9 +182,35 @@ def main() -> None:
         filtered_data = event.filter_data(data, criteria)
         print(f"Stream ID: {stats['id']}, Type: {stats['type']}")
         print(event.process_batch(data))
-        print(f'Event analysis: {len(data)} events, {len(filtered_data)} {criteria} detected')
+        print(f'Event analysis: {len(data)} events, '
+              f'{len(filtered_data)} {criteria} detected')
     except Exception as e:
         print(e)
+
+    print('\n=== Polymorphic Stream Processing ===')
+    try:
+        print('Processing mixed stream types through unified interface...\n')
+        stream_processor = StreamProcessor()
+        sensor = SensorStream('1')
+        data1 = ['temp:22.5', 'humidity:65', 'pressure:1013']
+        transaction = TransactionStream('1')
+        data2 = ['buy:100', 'sell:150', 'buy:75']
+        event = EventStream('1')
+        data3 = ['login', 'error', 'logout']
+
+        data_batches = [data1, data2, data3]
+        streams = [sensor, transaction, event]
+
+        print('Batch 1 Results:')
+        results = stream_processor.process_all_streams(streams, data_batches)
+        print('\nStream filtering active: High-priority data only')
+        print(f'Filtered results: '
+              f'{results[0]} critical sensor alerts, '
+              f'{results[1]} large transaction, '
+              f'{results[2]} event alerts')
+    except Exception as e:
+        print(e)
+    print('\nAll streams processed successfully. Nexus throughput optimal.')
 
 
 if __name__ == '__main__':
