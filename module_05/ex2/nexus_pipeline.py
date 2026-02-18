@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Protocol, Any, List, Optional, Dict
+from typing import Protocol, Any, List, Optional, Dict, Union
+from collections import Counter
 from sys import stderr
 
 
@@ -97,7 +98,7 @@ class JSONAdapter(ProcessingPipeline):
 
     def process(self, data: Any) -> Any:
         """Execute stages with error recovery handling."""
-        current_result = data
+        current_result: Union[Any] = data
         try:
             for stage in self.stages:
                 current_result = stage.process(current_result)
@@ -232,7 +233,7 @@ def main() -> None:
         print(*[pipe.get_pipeline_id() for pipe in manager.pipelines],
               sep=' -> ')
         print('Data flow: Raw -> Processed -> Analyzed -> Stored\n')
-        print(f'Chain result: {len(manager.pipelines)} '
+        print(f'Chain result: {len(Counter(manager.pipelines))} '
               'records processed through 3-stage pipeline')
         print('Performance: 95% efficiency, 0.2s total processing time')
     except Exception as e:
