@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any
+from sys import stderr
 
 
 class DataProcessor(ABC):
@@ -111,7 +112,7 @@ def main() -> None:
         else:
             print('Validation: Numeric data Not verified')
     except Exception:
-        print('Error was caught but programme continues')
+        print('Error was caught but programme continues', file=stderr)
 
     try:
         print('\nInitializing Text Processor...')
@@ -124,7 +125,7 @@ def main() -> None:
         else:
             print('Validation: Text data Not verified')
     except Exception:
-        print('Error was caught but programme continues')
+        print('Error was caught but programme continues', file=stderr)
 
     try:
         print('\nInitializing Log Processor...')
@@ -137,7 +138,7 @@ def main() -> None:
         else:
             print('Validation: Log entry NOT verified')
     except Exception:
-        print('Error was caught but programme continues')
+        print('Error was caught but programme continues', file=stderr)
 
     try:
         print('\n=== Polymorphic Processing Demo ===')
@@ -166,7 +167,7 @@ def main() -> None:
             i += 1
 
     except Exception:
-        print('Error was caught but programme continues')
+        print('Error was caught but programme continues', file=stderr)
 
     print('\nFoundation systems online. Nexus ready for advanced streams.')
 

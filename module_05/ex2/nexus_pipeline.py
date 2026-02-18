@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Protocol, Any, List, Optional, Dict
+from sys import stderr
 
 
 class ProcessingStage(Protocol):
@@ -174,7 +175,7 @@ class NexusManager():
             json_data = {"sensor": "temp", "value": 23.5, "unit": "C"}
             json_adapter.process(json_data)
         except Exception as e:
-            print('Error:', e)
+            print('Error:', e, file=stderr)
 
         print('\nProcessing CSV data through same pipeline...')
         try:
@@ -185,7 +186,7 @@ class NexusManager():
             csv_data = 'user,action,timestamp'
             csv_adapter.process(csv_data)
         except Exception as e:
-            print('Error:', e)
+            print('Error:', e, file=stderr)
 
         print('\nProcessing Stream data through same pipeline...')
         try:
@@ -196,7 +197,7 @@ class NexusManager():
             stream_data = [10, 30, 25, 20, 25.5]
             stream_adapter.process(stream_data)
         except Exception as e:
-            print('Error:', e)
+            print('Error:', e, file=stderr)
 
 
 def main() -> None:
@@ -214,7 +215,7 @@ def main() -> None:
         transform_stage.process(None)
         output_stage.process(None)
     except Exception as e:
-        print(f'Error: {e}')
+        print(f'Error: {e}', file=stderr)
 
     print('\n=== Multi-Format Data Processing ===')
     manager.process_data()
@@ -235,7 +236,7 @@ def main() -> None:
               'records processed through 3-stage pipeline')
         print('Performance: 95% efficiency, 0.2s total processing time')
     except Exception as e:
-        print('Error:', e)
+        print('Error:', e, file=stderr)
 
     print('\n=== Error Recovery Test ===')
     print('Simulating pipeline failure...')
@@ -250,7 +251,7 @@ def main() -> None:
         pipeline.add_stage(output_stage)
         pipeline.process(error_data)
     except Exception as e:
-        print(e)
+        print(e, file=stderr)
 
     print('\nNexus Integration complete. All systems operational.')
 

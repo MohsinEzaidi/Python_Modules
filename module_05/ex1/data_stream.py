@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any, List, Optional, Union, Dict
+from sys import stderr
 
 
 class DataStream(ABC):
@@ -105,7 +106,6 @@ class SensorStream(DataStream):
 class TransactionStream(DataStream):
     """Handles financial transaction data."""
 
-
     def __init__(self, stream_id: Optional[str]) -> None:
         """Create a transaction stream instance."""
         super().__init__(stream_id, 'Financial Data')
@@ -141,7 +141,7 @@ class StreamProcessor:
                     print(f'- Sensor data: {len(data)} readings processed')
                 except Exception as e:
                     results[0] += 1
-                    print('-', e)
+                    print('-', e, file=stderr)
             elif isinstance(stream, TransactionStream):
                 try:
                     stream.filter_data(data)
@@ -149,14 +149,14 @@ class StreamProcessor:
                           f'{len(data)} operations processed')
                 except Exception as e:
                     results[1] += 1
-                    print('-', e)
+                    print('-', e, file=stderr)
             elif isinstance(stream, EventStream):
                 try:
                     stream.filter_data(data)
                     print(f'- Event data: {len(data)} events processed')
                 except Exception as e:
                     results[2] += 1
-                    print('-', e)
+                    print('-', e, file=stderr)
             else:
                 raise Exception(
                     'Error: All streams should be one of these '
@@ -181,7 +181,7 @@ def main() -> None:
               f" {criteria}: {sum(filtered_data) / len(filtered_data)}"
               f"{'°C' if criteria == 'temp' else ''}")
     except Exception as e:
-        print(e)
+        print(e, file=stderr)
 
     print('\nInitializing Transaction Stream...')
     try:
@@ -196,7 +196,7 @@ def main() -> None:
         print(f'Transaction analysis: {len(data)} operations, {criteria}: '
               f'{"+" + str(units) if units > 0 else str(units)} units')
     except Exception as e:
-        print(e)
+        print(e, file=stderr)
 
     print('\nInitializing Event Stream...')
     try:
@@ -209,7 +209,7 @@ def main() -> None:
         print(f'Event analysis: {len(data)} events, '
               f'{len(filtered_data)} {criteria} detected')
     except Exception as e:
-        print(e)
+        print(e, file=stderr)
 
     print('\n=== Polymorphic Stream Processing ===')
     try:
@@ -233,7 +233,7 @@ def main() -> None:
               f'{results[1]} large transaction, '
               f'{results[2]} event alerts')
     except Exception as e:
-        print(e)
+        print(e, file=stderr)
     print('\nAll streams processed successfully. Nexus throughput optimal.')
 
 
