@@ -3,22 +3,28 @@ from typing import Any
 
 
 class DataProcessor(ABC):
+    """Abstract base class for all data processors."""
 
     @abstractmethod
     def process(self, data: Any) -> str:
+        """Process the input data and return a summary string."""
         pass
 
     @abstractmethod
     def validate(self, data: Any) -> bool:
+        """Validate input data before processing."""
         pass
 
     def format_output(self, result: str) -> str:
+        """Format the final output string."""
         return f'Output: {result}'
 
 
 class NumericProcessor(DataProcessor):
+    """Processor for numeric iterable data."""
 
     def process(self, data: Any) -> str:
+        """Calculate sum and average of numeric values."""
         s = 0
         data_len = len(data)
         for n in data:
@@ -27,6 +33,7 @@ class NumericProcessor(DataProcessor):
         return f'Processed {data_len} numeric values, sum={s}, avg={a}'
 
     def validate(self, data: Any) -> bool:
+        """Check that data is a non-empty iterable of non-negative numbers."""
         try:
             if len(data) == 0:
                 return False
@@ -39,28 +46,35 @@ class NumericProcessor(DataProcessor):
         return True
 
     def format_output(self, result: str) -> str:
+        """Format the final output string."""
         return super().format_output(result)
 
 
 class TextProcessor(DataProcessor):
+    """Processor for plain text data."""
 
     def process(self, data: Any) -> str:
+        """Count characters and words in text."""
         data_len = len(data)
         words = len(data.split(' '))
         return f'Processed text: {data_len} characters, {words} words'
 
     def validate(self, data: Any) -> bool:
+        """Check that input is a string."""
         if data.__class__.__name__ != 'str':
             return False
         return True
 
     def format_output(self, result: str) -> str:
+        """Format the final output string."""
         return super().format_output(result)
 
 
 class LogProcessor(DataProcessor):
+    """Processor for log entries with levels."""
 
     def process(self, data: Any) -> str:
+        """Format log messages based on data."""
         data = data.split(' ', 1)
         if data[0] == 'ERROR:':
             return f'[ALERT] ERROR level detected: {data[1]}'
@@ -68,6 +82,7 @@ class LogProcessor(DataProcessor):
             return f'[INFO] INFO level detected: {data[1]}'
 
     def validate(self, data: Any) -> bool:
+        """Validate log format and data."""
         if data.__class__.__name__ != 'str':
             return False
         if not (data.startswith('ERROR:') or data.startswith('INFO:')):
@@ -77,6 +92,7 @@ class LogProcessor(DataProcessor):
         return True
 
     def format_output(self, result: str) -> str:
+        """Format the final output string."""
         return super().format_output(result)
 
 

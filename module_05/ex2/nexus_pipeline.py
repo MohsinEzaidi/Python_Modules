@@ -104,8 +104,14 @@ class StreamAdapter(ProcessingPipeline):
 
     def process(self, data: Any) -> Any:
         current_result = data
-        for stage in self.stages:
-            current_result = stage.process(current_result)
+        try:
+            for stage in self.stages:
+                current_result = stage.process(current_result)
+        except Exception as e:
+            raise Exception(
+                f'Error detected in Stage {self.stages.index(stage) + 1}: {e}'
+                '\nRecovery initiated: Switching to backup processor\n'
+                'Recovery successful: Pipeline restored, processing resumed')
         return current_result
 
 
@@ -116,6 +122,43 @@ class NexusManager():
 
     def add_pipeline(self, new_pipeline: ProcessingPipeline) -> None:
         self.pipelines.append(new_pipeline)
+
+    def process_data(self):
+        input_stage = InputStage()
+        transform_stage = TransformStage()
+        output_stage = OutputStage()
+        print('\nProcessing JSON data through pipeline...')
+        try:
+            json_adapter = JSONAdapter('JSON_001')
+            json_adapter.add_stage(input_stage)
+            json_adapter.add_stage(transform_stage)
+            json_adapter.add_stage(output_stage)
+            json_data = {"sensor": "temp", "value": 23.5, "unit": "C"}
+            json_adapter.process(json_data)
+        except Exception as e:
+            print('Error:', e)
+
+        print('\nProcessing CSV data through same pipeline...')
+        try:
+            csv_adapter = CSVAdapter('CSV_001')
+            csv_adapter.add_stage(input_stage)
+            csv_adapter.add_stage(transform_stage)
+            csv_adapter.add_stage(output_stage)
+            csv_data = 'user,action,timestamp'
+            csv_adapter.process(csv_data)
+        except Exception as e:
+            print('Error:', e)
+
+        print('\nProcessing Stream data through same pipeline...')
+        try:
+            stream_adapter = StreamAdapter('Stream_001')
+            stream_adapter.add_stage(input_stage)
+            stream_adapter.add_stage(transform_stage)
+            stream_adapter.add_stage(output_stage)
+            stream_data = [10, 30, 25, 20, 25.5]
+            stream_adapter.process(stream_data)
+        except Exception as e:
+            print('Error:', e)
 
 
 def main() -> None:
@@ -133,41 +176,9 @@ def main() -> None:
         output_stage.process(None)
     except Exception as e:
         print(f'Error: {e}')
-    pass
 
     print('\n=== Multi-Format Data Processing ===')
-    print('\nProcessing JSON data through pipeline...')
-    try:
-        json_adapter = JSONAdapter('JSON_001')
-        json_adapter.add_stage(input_stage)
-        json_adapter.add_stage(transform_stage)
-        json_adapter.add_stage(output_stage)
-        json_data = {"sensor": "temp", "value": 23.5, "unit": "C"}
-        json_adapter.process(json_data)
-    except Exception as e:
-        print('Error:', e)
-
-    print('\nProcessing CSV data through same pipeline...')
-    try:
-        csv_adapter = CSVAdapter('CSV_001')
-        csv_adapter.add_stage(input_stage)
-        csv_adapter.add_stage(transform_stage)
-        csv_adapter.add_stage(output_stage)
-        csv_data = 'user,action,timestamp'
-        csv_adapter.process(csv_data)
-    except Exception as e:
-        print('Error:', e)
-
-    print('\nProcessing Stream data through same pipeline...')
-    try:
-        stream_adapter = StreamAdapter('Stream_001')
-        stream_adapter.add_stage(input_stage)
-        stream_adapter.add_stage(transform_stage)
-        stream_adapter.add_stage(output_stage)
-        stream_data = [10, 30, 25, 20, 25.5]
-        stream_adapter.process(stream_data)
-    except Exception as e:
-        print('Error:', e)
+    manager.process_data()
 
     print('\n=== Pipeline Chaining Demo ===')
     try:
@@ -189,7 +200,7 @@ def main() -> None:
 
     print('\n=== Error Recovery Test ===')
     print('Simulating pipeline failure...')
-    stage_n = 0
+    stage_n = 1
     try:
         pipeline = StreamAdapter('Stream__003')
         error_data = ['error']
@@ -198,12 +209,9 @@ def main() -> None:
         pipeline.add_stage(transform_stage)
         stage_n += 1
         pipeline.add_stage(output_stage)
-        stage_n += 1
         pipeline.process(error_data)
     except Exception as e:
-        print(f'\nError detected in Stage {stage_n}: {e}')
-        print('Recovery initiated: Switching to backup processor')
-        print('Recovery successful: Pipeline restored, processing resumed')
+        print(e)
 
     print('\nNexus Integration complete. All systems operational.')
 
