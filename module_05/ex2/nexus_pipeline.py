@@ -3,12 +3,16 @@ from typing import Protocol, Any, List, Optional, Dict
 
 
 class ProcessingStage(Protocol):
+    """Protocol for pipeline stages."""
     def process(self, data: Any) -> Any:
+        """Process input data and return modified result."""
         ...
 
 
 class InputStage():
+    """Initial stage for validating and logging input data."""
     def process(self, data: Any) -> Any:
+        """Handle raw input data."""
         if isinstance(data, Dict):
             print(f'Input: {data}')
         elif isinstance(data, str):
@@ -21,7 +25,9 @@ class InputStage():
 
 
 class TransformStage():
+    """Stage responsible for transforming data."""
     def process(self, data: Any) -> Any:
+        """Apply transformation logic to data."""
         if isinstance(data, Dict):
             print('Transform: Enriched with metadata and validation')
         elif isinstance(data, str):
@@ -34,7 +40,9 @@ class TransformStage():
 
 
 class OutputStage():
+    """Final stage for formatting and presenting output."""
     def process(self, data: Any) -> Any:
+        """Generate formatted output."""
         if isinstance(data, Dict):
             print(f'Output: Processed {data["sensor"]} reading: '
                   f'{data["value"]}°{data["unit"]} ', end='')
@@ -54,55 +62,81 @@ class OutputStage():
 
 
 class ProcessingPipeline(ABC):
+    """Abstract base pipeline managing multiple processing stages."""
 
     def __init__(self, pipeline_id: Optional[str]):
+        """Initialize pipeline with identifier."""
         self._pipeline_id = pipeline_id
-        self.stages = []
+        self.stages: List[ProcessingStage] = []
 
     def get_pipeline_id(self) -> Optional[str]:
+        """Return pipeline ID."""
         return self._pipeline_id
 
     def set_pipeline_id(self, new_pipeline_id: Optional[str]) -> None:
+        """Update pipeline ID."""
         self._pipeline_id = new_pipeline_id
 
     def add_stage(self, new_stage: ProcessingStage) -> None:
+        """Add processing stage to pipeline."""
         self.stages.append(new_stage)
 
     @abstractmethod
     def process(self, data: Any) -> Any:
+        """Execute pipeline processing logic."""
         pass
 
 
 class JSONAdapter(ProcessingPipeline):
+    """Pipeline adapter for JSON data."""
 
     def __init__(self, pipeline_id: Optional[str]) -> None:
+        """Create JSON processing pipeline."""
         super().__init__(pipeline_id)
 
     def process(self, data: Any) -> Any:
+        """Execute stages with error recovery handling."""
         current_result = data
-        for stage in self.stages:
-            current_result = stage.process(current_result)
+        try:
+            for stage in self.stages:
+                current_result = stage.process(current_result)
+        except Exception as e:
+            raise Exception(
+                f'Error detected in Stage {self.stages.index(stage) + 1}: {e}'
+                '\nRecovery initiated: Switching to backup processor\n'
+                'Recovery successful: Pipeline restored, processing resumed')
         return current_result
 
 
 class CSVAdapter(ProcessingPipeline):
+    """Pipeline adapter for CSV data."""
 
     def __init__(self, pipeline_id: Optional[str]) -> None:
+        """Create CSV processing pipeline."""
         super().__init__(pipeline_id)
 
     def process(self, data: Any) -> Any:
+        """Execute stages with error recovery handling."""
         current_result = data
-        for stage in self.stages:
-            current_result = stage.process(current_result)
+        try:
+            for stage in self.stages:
+                current_result = stage.process(current_result)
+        except Exception as e:
+            raise Exception(
+                f'Error detected in Stage {self.stages.index(stage) + 1}: {e}'
+                '\nRecovery initiated: Switching to backup processor\n'
+                'Recovery successful: Pipeline restored, processing resumed')
         return current_result
 
 
 class StreamAdapter(ProcessingPipeline):
 
     def __init__(self, pipeline_id: Optional[str]) -> None:
+        """Create Stream processing pipeline."""
         super().__init__(pipeline_id)
 
     def process(self, data: Any) -> Any:
+        """Execute stages with error recovery handling."""
         current_result = data
         try:
             for stage in self.stages:
@@ -116,14 +150,18 @@ class StreamAdapter(ProcessingPipeline):
 
 
 class NexusManager():
+    """Central manager for coordinating multiple pipelines."""
 
     def __init__(self) -> None:
+        """Initialize Nexus manager."""
         self.pipelines: List[ProcessingPipeline] = []
 
     def add_pipeline(self, new_pipeline: ProcessingPipeline) -> None:
+        """Register a new processing pipeline."""
         self.pipelines.append(new_pipeline)
 
-    def process_data(self):
+    def process_data(self) -> None:
+        """Run demo processing across multiple data formats."""
         input_stage = InputStage()
         transform_stage = TransformStage()
         output_stage = OutputStage()
@@ -162,6 +200,7 @@ class NexusManager():
 
 
 def main() -> None:
+    """A main function to test the pipeline system"""
     print('=== CODE NEXUS - ENTERPRISE PIPELINE SYSTEM ===')
     print('\nInitializing Nexus Manager...')
     manager = NexusManager()

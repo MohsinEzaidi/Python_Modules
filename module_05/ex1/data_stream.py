@@ -3,31 +3,40 @@ from typing import Any, List, Optional, Union, Dict
 
 
 class DataStream(ABC):
+    """Abstract base class for all data stream types."""
 
     def __init__(self, stream_id: Optional[str],
                  stream_type: Optional[str]) -> None:
+        """Initialize stream with ID and type."""
+
         self._stream_id = stream_id
         self._stream_type = stream_type
-        self.processed_data = 0
+        self.processed_data: int = 0
 
     def get_stream_id(self) -> Optional[str]:
+        """Return the stream ID."""
         return self._stream_id
 
     def set_stream_id(self, new_stream_id: Optional[str]) -> None:
+        """Update the stream ID."""
         self._stream_id = new_stream_id
 
     def get_stream_type(self) -> Optional[str]:
+        """Return the stream type."""
         return self._stream_type
 
     def set_stream_type(self, new_stream_type: Optional[str]) -> None:
+        """Update the stream type."""
         self._stream_type = new_stream_type
 
     @abstractmethod
     def process_batch(self, data_batch: List[Any]) -> str:
+        """Process a batch of raw stream data."""
         pass
 
     def filter_data(self, data_batch: List[Any],
                     criteria: Optional[str] = None) -> List[Any]:
+        """Filter data based on stream-specific rules."""
         self.processed_data += 1
         if isinstance(self, SensorStream):
             filtered_data = []
@@ -73,6 +82,7 @@ class DataStream(ABC):
                 '[SensorStream, TransactionStream, EventStream]')
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
+        """Return basic metadata about the stream."""
         return {
             'id': self.get_stream_id(),
             'type': self.get_stream_type()
@@ -80,36 +90,49 @@ class DataStream(ABC):
 
 
 class SensorStream(DataStream):
+    """Handles environmental sensor data."""
 
     def __init__(self, stream_id: Optional[str]) -> None:
+        """Create a sensor stream instance."""
         super().__init__(stream_id, 'Environmental Data')
 
     def process_batch(self, data_batch: List[Any]) -> str:
+        """Process sensor readings batch."""
         self.processed_data += len(data_batch)
         return f'Processing sensor batch: {data_batch}'
 
 
 class TransactionStream(DataStream):
+    """Handles financial transaction data."""
+
 
     def __init__(self, stream_id: Optional[str]) -> None:
+        """Create a transaction stream instance."""
         super().__init__(stream_id, 'Financial Data')
 
     def process_batch(self, data_batch: List[Any]) -> str:
+        """Process transaction operations batch."""
         return f'Processing transaction batch: {data_batch}'
 
 
 class EventStream(DataStream):
+    """Handles system event data."""
 
     def __init__(self, stream_id: Optional[str]) -> None:
+        """Create an event stream instance."""
         super().__init__(stream_id, 'System Events')
 
     def process_batch(self, data_batch: List[Any]) -> str:
+        """Process system event batch."""
         return f'Processing event batch: {data_batch}'
 
 
 class StreamProcessor:
+    """Processes multiple data streams in unified manner."""
+
     def process_all_streams(self, streams: List[DataStream],
                             data_batches: List[List[Any]]) -> List[int]:
+        """Run filtering on all streams and count errors."""
         results = [0, 0, 0]
         for stream, data in zip(streams, data_batches):
             if isinstance(stream, SensorStream):
@@ -142,6 +165,7 @@ class StreamProcessor:
 
 
 def main() -> None:
+    """A main function to test all data streams"""
     print('=== CODE NEXUS - POLYMORPHIC STREAM SYSTEM ===')
 
     print('\nInitializing Sensor Stream...')
