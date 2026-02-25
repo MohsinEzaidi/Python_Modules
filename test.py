@@ -1,2 +1,1 @@
-x = dict('{hello:99}')
-print(x)
+__versions__ = "1.0.0"
