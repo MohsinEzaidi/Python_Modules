@@ -18,8 +18,10 @@ except Exception as e:
 print('\nTesting Package Access:')
 try:
     import alchemy.transmutation
-    print(f'alchemy.transmutation.lead_to_gold(): {alchemy.transmutation.lead_to_gold()}')
-    print(f'alchemy.transmutation.philosophers_stone(): {alchemy.transmutation.philosophers_stone()}')
+    print('alchemy.transmutation.lead_to_gold()'
+          f': {alchemy.transmutation.lead_to_gold()}')
+    print('alchemy.transmutation.philosophers_stone()'
+          f': {alchemy.transmutation.philosophers_stone()}')
 except Exception as e:
     print(f'Exception occurred, {e}')
 

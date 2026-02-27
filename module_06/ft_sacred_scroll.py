@@ -10,12 +10,14 @@ except Exception:
     print('Exception occurred, but program continues')
 
 try:
-    print(f'alchemy.elements.create_water(): {alchemy.elements.create_water()}')
+    print('alchemy.elements.create_water()'
+          f': {alchemy.elements.create_water()}')
 except Exception:
     print('Exception occurred, but program continues')
 
 try:
-    print(f'alchemy.elements.create_earth(): {alchemy.elements.create_earth()}')
+    print('alchemy.elements.create_earth()'
+          f': {alchemy.elements.create_earth()}')
 except Exception:
     print('Exception occurred, but program continues')
 
