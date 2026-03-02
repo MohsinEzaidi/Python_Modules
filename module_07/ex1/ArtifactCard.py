@@ -24,6 +24,8 @@ class ArtifactCard(Card):
             raise ValueError(f'You don\'t have enough mana to play "{self._name}"')
 
         game_state['mana'] -= self._cost
+        game_state['cards_played'].append(self)
+        game_state['mana_used'] += self._cost
         return {
             'card_played': self.get_name(),
             'mana_used': self.get_cost(),

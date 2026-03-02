@@ -18,11 +18,13 @@ class CreatureCard(Card):
     def set_attack(self, attack: int) -> None:
         if attack < 0:
             self._attack = 0
+            return
         self._attack = attack
 
     def set_health(self, health: int) -> None:
         if health < 0:
             self._health = 0
+            return
         self._health = health
 
     def get_card_info(self) -> dict:
@@ -34,6 +36,8 @@ class CreatureCard(Card):
         if game_state['mana'] < self._cost:
             raise ValueError(f'You don\'t have enough mana to play "{self._name}"')
         game_state['mana'] -= self._cost
+        game_state['cards_played'].append(self)
+        game_state['mana_used'] += self._cost
         return {
             'card_played': self.get_name(),
             'mana_used': self.get_cost(),
@@ -44,5 +48,9 @@ class CreatureCard(Card):
         if self._attack >= target._health:
             target._health = 0
         else:
-            target._health -= self._attack
-        return {'attacker': self._name, 'target': target._name, 'damage_dealt': self._attack, 'combat_resolved': target._health == 0}
+            self.set_health(target._health - self._attack)
+        return {
+            'attacker': self._name,
+            'target': target._name,
+            'damage_dealt': self._attack,
+            'combat_resolved': target._health == 0}

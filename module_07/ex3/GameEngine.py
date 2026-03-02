@@ -1,0 +1,9 @@
+class GameEngine:
+    def configure_engine(self, factory: CardFactory, strategy: GameStrategy) -> None:
+        pass
+
+    def simulate_turn(self) -> dict:
+        pass
+
+    def get_engine_status(self) -> dict:
+        pass

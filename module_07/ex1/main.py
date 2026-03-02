@@ -6,16 +6,19 @@ from ex0 import CreatureCard
 
 print('\n=== DataDeck Deck Builder ===')
 print('\nBuilding deck with different card types...')
-game_state = {'mana': 20}
+game_state = {'mana': 20, 'cards_played': 0, 'mana_used': 0}
 try:
     deck = Deck()
-    creature = CreatureCard("Fire Dragon", 5, "Legendary", 7, 5)
-    artifact = ArtifactCard("Mana Crystal", 2, "Common", 5, "Permanent: +1 mana per turn")
-    spell = SpellCard("Lightning Bolt", 3, "Common", "damage")
-
-    deck.add_card(creature)
-    deck.add_card(artifact)
-    deck.add_card(spell)
+    cards = [
+        CreatureCard("Fire Dragon", 5, "Legendary", 7, 5),
+        ArtifactCard("Mana Crystal", 2, "Common", 5, "Permanent: +1 mana per turn"),
+        SpellCard("Lightning Bolt", 3, "Common", "damage")
+    ]
+    for card in cards:
+        try:
+            deck.add_card(card)
+        except Exception as e:
+            print(e)
 
     deck.shuffle()
     deck_stats = deck.get_deck_stats()

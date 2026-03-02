@@ -5,6 +5,8 @@ class Card(ABC):
     def __init__(self, name: str, cost: int, rarity: str) -> None:
         if cost < 0:
             raise ValueError('Cost of card must be a non-negative integer.')
+        if rarity not in ["Common", "Uncommon", "Rare", "Legendary"]:
+            raise ValueError('Rarity must be one of these ["Common", "Uncommon", "Rare", "Legendary"]')
         self._name = name
         self._cost = cost
         self._rarity = rarity

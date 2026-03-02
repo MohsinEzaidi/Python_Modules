@@ -5,7 +5,7 @@ print('\n=== DataDeck Card Foundation ===')
 
 print('\nTesting Abstract Base Class Design:')
 print('\nCreatureCard Info:')
-game_state = {'mana': 6}
+game_state = {'mana': 6, 'cards_played': 0, 'mana_used': 0}
 try:
     creature = CreatureCard('Fire Dragon', 5, 'Legendary', 7, 5)
     print(creature.get_card_info())

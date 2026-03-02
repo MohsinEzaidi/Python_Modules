@@ -16,6 +16,9 @@ class SpellCard(Card):
         if game_state['mana'] < self._cost:
             raise Exception(f'You don\'t have enough mana to play "{self._name}"')
         game_state['mana'] -= self._cost
+        game_state['cards_played'].append(self)
+        game_state['mana_used'] += self._cost
+
         result = {'card_played': self.get_name(),'mana_used': self.get_cost()}
         if self._effect_type == 'heal':
             result['effect'] = 'Healing target by 3'
@@ -37,7 +40,7 @@ class SpellCard(Card):
             if self._effect_type == 'buff':
                 target.set_attack(target.get_attack() + 3)
             if self._effect_type == 'damage':
-                target.set_health(target._get_health() - 3)
+                target.set_health(target.get_health() - 3)
             if self._effect_type == 'debuff':
                 target.set_attack(target.get_attack() - 3)
         return {
