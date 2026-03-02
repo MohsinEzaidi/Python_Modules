@@ -3,6 +3,8 @@ from abc import ABC, abstractmethod
 
 class Card(ABC):
     def __init__(self, name: str, cost: int, rarity: str) -> None:
+        if cost < 0:
+            raise ValueError('Cost of card must be a non-negative integer.')
         self._name = name
         self._cost = cost
         self._rarity = rarity
