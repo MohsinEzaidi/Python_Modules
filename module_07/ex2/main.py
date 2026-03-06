@@ -1,20 +1,18 @@
-from ex2.EliteCard import EliteCard
-from ex1.SpellCard import SpellCard
-from ex0.CreatureCard import CreatureCard
-
-
 print('\n=== DataDeck Ability System ===')
-print('\nEliteCard capabilities:')
-print("- Card: ['play', 'get_card_info', 'is_playable']")
-print("- Combatable: ['attack', 'defend', 'get_combat_stats']")
-print("- Magical: ['cast_spell', 'channel_mana', 'get_magic_stats']")
-
 try:
+    from .EliteCard import EliteCard
+    from ex1.SpellCard import SpellCard
+    from ex0.CreatureCard import CreatureCard
+
+    print('\nEliteCard capabilities:')
+    for key, value in EliteCard.get_capabilities().items():
+        print(f'- {key}: {value}')
     game_state = {'mana': 20, 'cards_played': [], 'mana_used': 0}
     arcane = EliteCard('Arcane Warrior', 4, 'Rare', 5, 22, 3, 4)
     target = EliteCard('Enemy', 2, 'Common', 5, 10, 0, 0)
 
-    print(f'\nPlaying {arcane.get_name()} ({arcane.__class__.__name__.replace("Card", " Card")}):')
+    print(f'\nPlaying {arcane.get_name()} '
+          f'({arcane.__class__.__name__.replace("Card", " Card")}):')
     try:
         print('\nCombat phase:')
         arcane.play(game_state)
@@ -40,10 +38,13 @@ try:
         print(f'Spell cast: {spell_result}')
         mana_channel = arcane.channel_mana(3)
         print(f'Mana channel: {mana_channel}')
-
+        print('\nMultiple interface implementation successful!')
     except Exception as e:
         print(e)
+except (ImportError, AttributeError):
+    print(
+        'All exercises must be executed from the repository root '
+        'using: python3 -m exN.main (where N is the exercise number).\n'
+        'Example: python3 -m ex0.main')
 except Exception as e:
     print(e)
-
-print('\nMultiple interface implementation successful!')

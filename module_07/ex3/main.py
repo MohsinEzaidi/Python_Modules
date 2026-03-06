@@ -1,11 +1,10 @@
-from .GameEngine import GameEngine
-from .FantasyCardFactory import FantasyCardFactory
-from .AggressiveStrategy import AggressiveStrategy
-
 print('\n=== DataDeck Game Engine ===')
-
-print('\nConfiguring Fantasy Card Game...')
 try:
+    from .GameEngine import GameEngine
+    from .FantasyCardFactory import FantasyCardFactory
+    from .AggressiveStrategy import AggressiveStrategy
+
+    print('\nConfiguring Fantasy Card Game...')
     factory = FantasyCardFactory()
     strategy = AggressiveStrategy()
     game = GameEngine()
@@ -17,15 +16,26 @@ try:
 
     print('\nSimulating aggressive turn...')
     turn_details = game.simulate_turn()
-    print(f'Hand: {[f"{name} ({cost})" for name, cost in turn_details["hand_details"].items()]}')
+    hand_list = [
+        f"{name} ({cost})"
+        for name, cost in turn_details["hand_details"].items()
+    ]
+    print(f'Hand: {hand_list}')
 
     print('\nTurn execution:')
     print(f'Strategy: {game.get_strategy().get_strategy_name()}')
-    print(f'Actions: {game.get_strategy().execute_turn(turn_details["hand"], game.get_factory().create_themed_deck(1)["cards"])}')
+    battlefield = game.get_factory().create_themed_deck(1)["cards"]
+    strategy = game.get_strategy()
+    actions = strategy.execute_turn(turn_details["hand"], battlefield)
+    print(f'Actions: {actions}')
 
     print('\nGame Report:')
     print(game.get_engine_status())
+    print('Abstract Factory + Strategy Pattern: Maximum flexibility achieved!')
+except (ImportError, AttributeError):
+    print(
+        'All exercises must be executed from the repository root '
+        'using: python3 -m exN.main (where N is the exercise number).\n'
+        'Example: python3 -m ex0.main')
 except Exception as e:
     print(e)
-
-print('Abstract Factory + Strategy Pattern: Maximum flexibility achieved!')

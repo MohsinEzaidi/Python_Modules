@@ -4,49 +4,141 @@ from ex0.Card import Card
 from ex1.SpellCard import SpellCard
 from ex1.ArtifactCard import ArtifactCard
 from random import choice
+from typing import List, Dict, Union
 
 
 class FantasyCardFactory(CardFactory):
-    creatures = [
-        {"name": "Fire Dragon", "cost": 5, "rarity": "Legendary", "attack": 7, "health": 5},
-        {"name": "Goblin Warrior", "cost": 2, "rarity": "Common", "attack": 2, "health": 1},
-        {"name": "Ice Wizard", "cost": 4, "rarity": "Rare", "attack": 3, "health": 4},
-        {"name": "Lightning Elemental", "cost": 3, "rarity": "Uncommon", "attack": 4, "health": 2},
-        {"name": "Stone Golem", "cost": 6, "rarity": "Rare", "attack": 5, "health": 8},
-        {"name": "Shadow Assassin", "cost": 3, "rarity": "Uncommon", "attack": 5, "health": 2},
-        {"name": "Healing Angel", "cost": 4, "rarity": "Rare", "attack": 2, "health": 6},
-        {"name": "Forest Sprite", "cost": 1, "rarity": "Common", "attack": 1, "health": 1},
+    creatures: List[Dict[str, Union[str, int]]] = [
+        {"name": "Fire Dragon",
+            "cost": 5,
+            "rarity": "Legendary",
+            "attack": 7,
+            "health": 5},
+        {"name": "Goblin Warrior",
+            "cost": 2,
+            "rarity": "Common",
+            "attack": 2,
+            "health": 1},
+        {"name": "Ice Wizard",
+            "cost": 4,
+            "rarity": "Rare",
+            "attack": 3,
+            "health": 4},
+        {"name": "Lightning Elemental",
+            "cost": 3,
+            "rarity": "Uncommon",
+            "attack": 4,
+            "health": 2},
+        {"name": "Stone Golem",
+            "cost": 6,
+            "rarity": "Rare",
+            "attack": 5,
+            "health": 8},
+        {"name": "Shadow Assassin",
+            "cost": 3,
+            "rarity": "Uncommon",
+            "attack": 5,
+            "health": 2},
+        {"name": "Healing Angel",
+            "cost": 4,
+            "rarity": "Rare",
+            "attack": 2,
+            "health": 6},
+        {"name": "Forest Sprite",
+            "cost": 1,
+            "rarity": "Common",
+            "attack": 1,
+            "health": 1},
     ]
-    
-    spells = [
-        {"name": "Lightning Bolt", "cost": 3, "rarity": "Common", "effect_type": "damage"},
-        {"name": "Healing Potion", "cost": 2, "rarity": "Common", "effect_type": "heal"},
-        {"name": "Fireball", "cost": 4, "rarity": "Uncommon", "effect_type": "damage"},
-        {"name": "Shield Spell", "cost": 1, "rarity": "Common", "effect_type": "buff"},
-        {"name": "Meteor", "cost": 8, "rarity": "Legendary", "effect_type": "damage"},
-        {"name": "Ice Shard", "cost": 2, "rarity": "Common", "effect_type": "damage"},
-        {"name": "Divine Light", "cost": 5, "rarity": "Rare", "effect_type": "heal"},
-        {"name": "Magic Missile", "cost": 1, "rarity": "Common", "effect_type": "damage"},
+
+    spells: List[Dict[str, Union[str, int]]] = [
+        {"name": "Lightning Bolt",
+            "cost": 3,
+            "rarity": "Common",
+            "effect_type": "damage"},
+        {"name": "Healing Potion",
+            "cost": 2,
+            "rarity": "Common",
+            "effect_type": "heal"},
+        {"name": "Fireball",
+            "cost": 4,
+            "rarity": "Uncommon",
+            "effect_type": "damage"},
+        {"name": "Shield Spell",
+            "cost": 1,
+            "rarity": "Common",
+            "effect_type": "buff"},
+        {"name": "Meteor",
+            "cost": 8,
+            "rarity": "Legendary",
+            "effect_type": "damage"},
+        {"name": "Ice Shard",
+            "cost": 2,
+            "rarity": "Common",
+            "effect_type": "damage"},
+        {"name": "Divine Light",
+            "cost": 5,
+            "rarity": "Rare",
+            "effect_type": "heal"},
+        {"name": "Magic Missile",
+            "cost": 1,
+            "rarity": "Common",
+            "effect_type": "damage"},
     ]
-    artifacts = [
-        {"name": "Mana Crystal", "cost": 2, "rarity": "Common", "durability": 5, "effect": "Permanent: +1 mana per turn"},
-        {"name": "Sword of Power", "cost": 3, "rarity": "Uncommon", "durability": 3, "effect": "Permanent: +2 attack to equipped creature"},
-        {"name": "Ring of Wisdom", "cost": 4, "rarity": "Rare", "durability": 4, "effect": "Permanent: Draw an extra card each turn"},
-        {"name": "Shield of Defense", "cost": 5, "rarity": "Rare", "durability": 6, "effect": "Permanent: +3 health to all friendly creatures"},
-        {"name": "Crown of Kings", "cost": 7, "rarity": "Legendary", "durability": 8, "effect": "Permanent: +1 cost reduction to all cards"},
-        {"name": "Boots of Speed", "cost": 2, "rarity": "Uncommon", "durability": 2, "effect": "Permanent: Cards cost 1 less mana"},
-        {"name": "Cloak of Shadows", "cost": 3, "rarity": "Uncommon", "durability": 3, "effect": "Permanent: Creatures have stealth"},
-        {"name": "Staff of Elements", "cost": 6, "rarity": "Legendary", "durability": 7, "effect": "Permanent: +1 spell damage"},
+    artifacts: List[Dict[str, Union[str, int]]] = [
+        {"name": "Mana Crystal",
+            "cost": 2,
+            "rarity": "Common",
+            "durability": 5,
+            "effect": "Permanent: +1 mana per turn"},
+        {"name": "Sword of Power",
+            "cost": 3,
+            "rarity": "Uncommon",
+            "durability": 3,
+            "effect": "Permanent: +2 attack to equipped creature"},
+        {"name": "Ring of Wisdom",
+            "cost": 4,
+            "rarity": "Rare",
+            "durability": 4,
+            "effect": "Permanent: Draw an extra card each turn"},
+        {"name": "Shield of Defense",
+            "cost": 5,
+            "rarity": "Rare",
+            "durability": 6,
+            "effect": "Permanent: +3 health to all friendly creatures"},
+        {"name": "Crown of Kings",
+            "cost": 7,
+            "rarity": "Legendary",
+            "durability": 8,
+            "effect": "Permanent: +1 cost reduction to all cards"},
+        {"name": "Boots of Speed",
+            "cost": 2,
+            "rarity": "Uncommon",
+            "durability": 2,
+            "effect": "Permanent: Cards cost 1 less mana"},
+        {"name": "Cloak of Shadows",
+            "cost": 3,
+            "rarity": "Uncommon",
+            "durability": 3,
+            "effect": "Permanent: Creatures have stealth"},
+        {"name": "Staff of Elements",
+            "cost": 6,
+            "rarity": "Legendary",
+            "durability": 7,
+            "effect": "Permanent: +1 spell damage"},
     ]
 
     def create_creature(self, name_or_power: str | int | None = None) -> Card:
         if isinstance(name_or_power, str):
             for c in self.creatures:
                 if name_or_power == c['name']:
-                    return CreatureCard(c['name'], c['cost'], c['rarity'], c['attack'], c['health'])
+                    return CreatureCard(
+                        c['name'], c['cost'], c['rarity'],
+                        c['attack'], c['health'])
         elif isinstance(name_or_power, int):
-            c = self.creatures[name_or_power%len(self.creatures)]
-            return CreatureCard(c['name'], c['cost'], c['rarity'], c['attack'], c['health'])
+            c = self.creatures[name_or_power % len(self.creatures)]
+            return CreatureCard(
+                c['name'], c['cost'], c['rarity'], c['attack'], c['health'])
         else:
             return CreatureCard('Unknown creature', 1, 'Common', 1, 2)
 
@@ -54,28 +146,35 @@ class FantasyCardFactory(CardFactory):
         if isinstance(name_or_power, str):
             for c in self.spells:
                 if name_or_power == c['name']:
-                    return SpellCard(c['name'], c['cost'], c['rarity'], c['effect_type'])
+                    return SpellCard(
+                        c['name'], c['cost'], c['rarity'], c['effect_type'])
         elif isinstance(name_or_power, int):
-            c = self.spells[name_or_power%len(self.spells)]
-            return SpellCard(c['name'], c['cost'], c['rarity'], c['effect_type'])
+            c = self.spells[name_or_power % len(self.spells)]
+            return SpellCard(
+                c['name'], c['cost'], c['rarity'], c['effect_type'])
         return SpellCard('Unknown spell', 1, 'Common', 'No effect type')
 
     def create_artifact(self, name_or_power: str | int | None = None) -> Card:
         if isinstance(name_or_power, str):
             for c in self.artifacts:
                 if name_or_power == c['name']:
-                    return ArtifactCard(c['name'], c['cost'], c['rarity'], c['durability'], c['effect'])
+                    return ArtifactCard(
+                        c['name'], c['cost'], c['rarity'],
+                        c['durability'], c['effect'])
         elif isinstance(name_or_power, int):
-            c = self.artifacts[name_or_power%len(self.artifacts)]
-            return ArtifactCard(c['name'], c['cost'], c['rarity'], c['durability'], c['effect'])
+            c = self.artifacts[name_or_power % len(self.artifacts)]
+            return ArtifactCard(
+                c['name'], c['cost'], c['rarity'],
+                c['durability'], c['effect'])
         return ArtifactCard('Unknown artifact', 1, 'Common', 'No effect')
 
     def create_themed_deck(self, size: int) -> dict:
-        result = {
+        result: Dict[str, list] = {
             'cards': []
         }
         for _ in range(size):
-            card_type = choice([self.artifacts, self.creatures, self.spells])
+            card_type: List[Dict[str, Union[str, int]]] = choice(
+                [self.artifacts, self.creatures, self.spells])
             c = choice(card_type)
             if c in self.artifacts:
                 result['cards'].append(self.create_artifact(c['name']))
@@ -84,7 +183,6 @@ class FantasyCardFactory(CardFactory):
             if c in self.spells:
                 result['cards'].append(self.create_spell(c['name']))
         return result
-
 
     def get_supported_types(self) -> dict:
         return {

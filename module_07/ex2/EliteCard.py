@@ -1,12 +1,15 @@
 from ex0.Card import Card
-from ex2.Combatable import Combatable
-from ex2.Magical import Magical
+from .Combatable import Combatable
+from .Magical import Magical
+from typing import Dict, Union
 
 
 class EliteCard(Card, Combatable, Magical):
-    def __init__(self, name: str, cost: int, rarity: str, attack: int, health: int, armor: int, mana_power: int) -> None:
+    def __init__(self, name: str, cost: int, rarity: str, attack: int,
+                 health: int, armor: int, mana_power: int) -> None:
         if attack < 0 or health < 0:
-            raise ValueError("Attack and health must be non-negative integers.")
+            raise ValueError(
+                "Attack and health must be non-negative integers.")
         super().__init__(name, cost, rarity)
         self._attack = attack
         self._health = health
@@ -28,50 +31,52 @@ class EliteCard(Card, Combatable, Magical):
     def set_attack(self, attack: int) -> None:
         if attack < 0:
             self._attack = 0
+            return
         self._attack = attack
 
     def set_health(self, health: int) -> None:
         if health < 0:
             self._health = 0
+            return
         self._health = health
 
     def set_armor(self, new_armor: int) -> None:
-        if new_armor < 0 :
+        if new_armor < 0:
             self._armor = 0
             return
         self._armor = new_armor
 
     def set_mana_power(self, new_mana_power: int) -> None:
-        if new_mana_power < 0 :
+        if new_mana_power < 0:
             self._mana_power = 0
             return
         self._mana_power = new_mana_power
 
     def play(self, game_state: dict) -> dict:
         if game_state['mana'] < self._cost:
-            raise ValueError(f'You don\'t have enough mana to play "{self._name}"')
+            raise ValueError(
+                f'You don\'t have enough mana to play "{self._name}"')
         game_state['mana'] -= self._cost
         game_state['cards_played'].append(self)
         game_state['mana_used'] += self._cost
-        return {
+        result: Dict[str, Union[str, int]] = {
             'card_played': self.get_name(),
             'mana_used': self.get_cost(),
             'effect': 'Elite Card summoned to battlefield'
         }
+        return result
 
     def attack(self, target) -> dict:
-        if self._attack >= target._health:
-            target._health = 0
-        else:
-            self.set_health(target._health - self._attack)
-        return {
+        self.set_health(target._health - self._attack)
+        result: Dict[str, Union[str, int]] = {
             'attacker': self._name,
             'target': target._name,
             'damage': self._attack,
             'combat_type': 'melee'}
+        return result
 
     def defend(self, incoming_damage: int) -> dict:
-        result = {
+        result: Dict[str, Union[str, int, bool]] = {
             'defender': self._name,
             'damage_taken': 0,
             'damage_blocked': 0,
@@ -89,7 +94,7 @@ class EliteCard(Card, Combatable, Magical):
         return result
 
     def cast_spell(self, spell_name: str, targets: list) -> dict:
-        return{
+        return {
             'caster': self._name,
             'spell': spell_name,
             'targets': [t.get_name() for t in targets],
@@ -105,14 +110,21 @@ class EliteCard(Card, Combatable, Magical):
         }
 
     def get_magic_stats(self) -> dict:
-        return{
+        return {
             'magical power': 'mana_power',
             'amount': self._mana_power
         }
 
     def get_combat_stats(self) -> dict:
-        return{
+        return {
             'health': self._health,
             'attack': self._attack,
             'armor': self._armor
+        }
+
+    def get_capabilities() -> dict:
+        return {
+            'Card': ['play', 'get_card_info', 'is_playable'],
+            'Combatable': ['attack', 'defend', 'get_combat_stats'],
+            'Magical': ['cast_spell', 'channel_mana', 'get_magic_stats']
         }

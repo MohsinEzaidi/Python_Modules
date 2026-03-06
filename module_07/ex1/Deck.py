@@ -1,12 +1,14 @@
-from ex0 import Card, CreatureCard
-from ex1.SpellCard import SpellCard
-from ex1.ArtifactCard import ArtifactCard
+from ex0.Card import Card
+from ex0.CreatureCard import CreatureCard
+from .SpellCard import SpellCard
+from .ArtifactCard import ArtifactCard
 from random import shuffle
+from typing import Dict, List, Union
 
 
 class Deck():
     def __init__(self) -> None:
-        self._deck: list[Card] = []
+        self._deck: List[Card] = []
 
     def get_deck(self) -> list:
         return self._deck
@@ -29,16 +31,17 @@ class Deck():
 
     def draw_card(self) -> Card:
         if not self._deck:
-            raise ValueError('Deck is empty, couldn\'t draw a card')
+            raise ValueError(
+                'Deck is empty, couldn\'t draw a card')
         return self._deck.pop(0)
 
     def get_deck_stats(self) -> dict:
-        deck_stats = {
-            'total_cards' : 0,
-            'creatures' : 0,
-            'spells' : 0,
-            'artifacts' : 0,
-            'avg_cost' : 0
+        deck_stats: Dict[str, Union[int, float]] = {
+            'total_cards': 0,
+            'creatures': 0,
+            'spells': 0,
+            'artifacts': 0,
+            'avg_cost': 0
             }
         if not self._deck:
             return deck_stats
@@ -54,5 +57,5 @@ class Deck():
                 self._deck.remove(card)
             costs.append(card.get_cost())
             deck_stats['total_cards'] += 1
-        deck_stats['avg_cost'] = sum(costs)/len(costs)
+        deck_stats['avg_cost'] = round(sum(costs)/len(costs), 2)
         return deck_stats

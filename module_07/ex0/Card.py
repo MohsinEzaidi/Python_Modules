@@ -1,12 +1,21 @@
 from abc import ABC, abstractmethod
+from enum import Enum
+from typing import Dict
+
+
+class CardRarity(Enum):
+    COMMON = "Common"
+    UNCOMMON = "Uncommon"
+    RARE = "Rare"
+    LEGENDARY = "Legendary"
 
 
 class Card(ABC):
     def __init__(self, name: str, cost: int, rarity: str) -> None:
         if cost < 0:
             raise ValueError('Cost of card must be a non-negative integer.')
-        if rarity not in ["Common", "Uncommon", "Rare", "Legendary"]:
-            raise ValueError('Rarity must be one of these ["Common", "Uncommon", "Rare", "Legendary"]')
+        if rarity not in [r.value for r in CardRarity]:
+            raise ValueError('Not a Valid Rarity')
         self._name = name
         self._cost = cost
         self._rarity = rarity
@@ -29,18 +38,20 @@ class Card(ABC):
     def set_rarity(self, rarity: str) -> None:
         self._rarity = rarity
 
-    @abstractmethod
     def play(self, game_state: dict) -> dict:
         pass
 
     def get_card_info(self) -> dict:
-        return {
+        result: Dict[str, int, str] = {
             "name": self._name,
             "cost": self._cost,
             "rarity": self._rarity
         }
+        return result
 
     def is_playable(self, available_mana: int) -> bool:
         if available_mana >= self._cost:
             return True
         return False
+
+    play = abstractmethod(play)

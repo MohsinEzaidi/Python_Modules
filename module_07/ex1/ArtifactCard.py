@@ -1,10 +1,12 @@
 from ex0.Card import Card
+from typing import Dict
 
 
 class ArtifactCard(Card):
-    def __init__(self, name: str, cost: int, rarity: str, durability: int, effect: str) -> None:
+    def __init__(self, name: str, cost: int, rarity: str,
+                 durability: int, effect: str) -> None:
         super().__init__(name, cost, rarity)
-        self._durability = durability
+        self._durability = durability if durability > 0 else 0
         self._effect = effect
 
     def get_durability(self) -> int:
@@ -14,6 +16,9 @@ class ArtifactCard(Card):
         return self._effect
 
     def set_durability(self, new_durability: int) -> None:
+        if new_durability < 0:
+            self._durability = 0
+            return
         self._durability = new_durability
 
     def set_effect(self, new_effect: str) -> None:
@@ -21,24 +26,28 @@ class ArtifactCard(Card):
 
     def play(self, game_state: dict) -> dict:
         if game_state['mana'] < self._cost:
-            raise ValueError(f'You don\'t have enough mana to play "{self._name}"')
+            raise ValueError(
+                f'You don\'t have enough mana to play "{self._name}"')
 
         game_state['mana'] -= self._cost
         game_state['cards_played'].append(self)
         game_state['mana_used'] += self._cost
-        return {
+        result: Dict[str, int, str] = {
             'card_played': self.get_name(),
             'mana_used': self.get_cost(),
             'effect': self._effect
         }
+        return result
 
-def activate_ability(self) -> dict:
-    if self._durability <= 0:
-        return {"status": "destroyed", "message": "Artifact is broken!"}
-
-    self._durability -= 1
-    return {
-        "status": "active",
-        "effect": self._effect,
-        "remaining_durability": self._durability
-    }
+    def activate_ability(self) -> dict:
+        result: Dict[str, str] = {
+            "status": "destroyed", "message": "Artifact is broken!"}
+        if self._durability <= 0:
+            return result
+        result = {
+            "status": "active",
+            "effect": self._effect,
+            "remaining_durability": self._durability
+        }
+        self._durability -= 1
+        return result

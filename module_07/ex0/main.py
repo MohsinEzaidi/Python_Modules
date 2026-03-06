@@ -1,17 +1,17 @@
-from ex0.CreatureCard import CreatureCard
-
-
 print('\n=== DataDeck Card Foundation ===')
+game_state = {'mana': 6, 'cards_played': [], 'mana_used': 0}
 
-print('\nTesting Abstract Base Class Design:')
-print('\nCreatureCard Info:')
-game_state = {'mana': 6, 'cards_played': 0, 'mana_used': 0}
 try:
+    from .CreatureCard import CreatureCard
+
+    print('\nTesting Abstract Base Class Design:')
+    print('\nCreatureCard Info:')
     creature = CreatureCard('Fire Dragon', 5, 'Legendary', 7, 5)
     print(creature.get_card_info())
 
     try:
-        print(f'\nPlaying {creature.get_name()} with {game_state["mana"]} mana available:')
+        print(f'\nPlaying {creature.get_name()} with '
+              f'{game_state["mana"]} mana available:')
         playable = creature.is_playable(game_state['mana'])
 
         print('Playable:', playable)
@@ -32,10 +32,14 @@ try:
         print('Playable:', playable)
         if playable:
             print(f'Play result: {creature.play(game_state)}')
+        print('\nAbstract pattern successfully demonstrated!')
     except Exception as e:
-        print('Error: ', e)
-
+        print('Error:', e)
+except (ImportError, AttributeError):
+    print(
+        'All exercises must be executed from the repository root '
+        'using: python3 -m exN.main (where N is the exercise number).\n'
+        'Example: python3 -m ex0.main')
 except Exception as e:
-    print('Error: ', e)
+    print('Error:', e)
 
-print('\nAbstract pattern successfully demonstrated!')
